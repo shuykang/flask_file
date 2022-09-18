@@ -1,0 +1,157 @@
+{% extends 'layout.html' %}
+
+{% block title %}Show files{% endblock %}
+
+{% block content %}
+
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+  <style>
+    .success {
+      color: green
+    }
+  </style>
+
+
+
+<script>
+          
+  // // jQuery code to show the working of this method
+  // $(document).ready(function() {
+  //     $("form").submit(function() {
+  //         alert("Form submitted Successfully");
+  //     });
+  // });
+  $(document).ready(function () {
+  $("form").submit(function (event) {
+    alert("Form submitted Successfully");
+
+    var formData = new FormData();
+
+    formData.append("files",$('#files')[0].files[0]);
+    // formData.append("crowd_name", crowd_name);
+    // formData.append("crowd_desc", crowd_desc);
+
+    // var formData = {
+
+    //   name: $("#name").val(),
+    //   email: $("#email").val(),
+    //   superheroAlias: $("#superheroAlias").val(),
+    
+    // };
+
+    $.ajax({
+      type: "POST",
+      url: '{{url_for("upload")}}',
+      data: formData,
+      dataType: "json",
+      encode: true,
+    }).done(function (data) {
+      console.log(data);
+    });
+
+    event.preventDefault();
+  });
+});
+
+</script>
+  
+</head>
+
+<body>
+
+
+
+  <div class="container">
+    <div class="py-5 text-center">
+      <h2 class="text-primary">模型编译</h2>
+      <p class="lead">Below is an example form built entirely with Bootstrap’s form controls. Each required form group
+        has a validation state that can be triggered by attempting to submit the form without completing it.</p>
+    </div>
+
+    <div class="row">
+
+      <div class="col-md-12 order-md-1">
+        <h4 class="mb-3">选择模型</h4>
+        <form method="post" action="/upload" enctype="multipart/form-data" class="needs-validation" novalidate>
+
+
+          <div class="row">
+            <div class="col-md-5 mb-3">
+              <input type="file" name="files" multiple="true" autocomplete="off" class="btn btn-dark w-100">
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="col-md-5 mb-3">
+              <label for="country">芯片</label>
+              <select class="custom-select d-block w-100" id="country" required>
+                <option value="">选择...</option>
+                <option>6345</option>
+                <option>4536</option>
+                <option>3367</option>
+              </select>
+              <div class="invalid-feedback">
+                请选择一个有效的芯片类型.
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label for="state">类型</label>
+              <select class="custom-select d-block w-100" id="state" required>
+                <option value="">请选择...</option>
+                <option>测试1</option>
+                <option>测试2</option>
+                <option>测试3</option>
+              </select>
+              <div class="invalid-feedback">
+                请提供一个有效的选择.
+              </div>
+            </div>
+          </div>
+          <hr class="mb-4">
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="same-address">
+            <label class="custom-control-label" for="same-address">Shipping address is the same as my billing
+              address</label>
+          </div>
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="save-info">
+            <label class="custom-control-label" for="save-info">Save this information for next time</label>
+          </div>
+          <hr class="mb-4">
+
+          <hr class="mb-4">
+          <button class="btn btn-primary btn-lg btn-block" type="submit">开始编译</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div align="center">
+    <div class="container-fluid ">
+
+      <hr>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+      <div class="{{ category }}">{{ message }}</div>
+      {% endfor %}
+      {% endwith %}
+      <br>
+
+    </div>
+  </div>
+
+
+</body>
+
+
+
+{% endblock %}
